@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -23,17 +22,6 @@
       0% { background-position: 0% 0%, 100% 100%; }
       100% { background-position: 100% 100%, 0% 0%; }
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #aaa, 0 0 20px #aaa; }
-      to   { text-shadow: 0 0 20px #fff, 0 0 30px #fef4d1; }
-    }
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
     body {
       font-family: sans-serif;
       background-color: #fef4d1;
@@ -46,72 +34,37 @@
       padding: 40px 20px;
       text-align: center;
       text-shadow: 2px 2px 4px #00000066;
-      animation: fadeIn 2s ease-out forwards;
     }
     header h1 {
       font-size: 42px;
       margin: 0;
-      animation: fadeIn 2s ease-out forwards, glow 3s ease-in-out infinite alternate;
     }
     main {
-      padding: 20px;
-    }
-    .app-card {
-      background-color: #fef4d1;
-      border-radius: 12px;
-      padding: 30px;
-      margin: 50px auto;
+      padding: 30px 20px;
       max-width: 960px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      animation: fadeInUp 1s ease-out forwards;
-      opacity: 0;
-      transform: translateY(20px);
+      margin: 0 auto;
     }
-    .fade-1 { animation-delay: 0.3s; }
-    .fade-2 { animation-delay: 0.6s; }
-    .fade-3 { animation-delay: 0.9s; }
-    ul {
-      margin: 10px 0 0 0;
+    h2 {
+      font-size: 24px;
+      margin-top: 40px;
+      color: #222;
     }
-    a {
-      color: #0044cc;
-      text-decoration: none;
-      position: relative;
+    p {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #333;
     }
-    a::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: #0044cc;
-      visibility: hidden;
-      transform: scaleX(0);
-      transition: all 0.3s ease-in-out;
-    }
-    a:hover::after {
-      visibility: visible;
-      transform: scaleX(1);
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 20px 0;
+      border-radius: 10px;
     }
     footer {
       text-align: center;
       padding: 10px;
       background-color: #f9e6bd;
       font-size: 14px;
-    }
-    .btn {
-      display: inline-block;
-      background-color: #28a745;
-      color: white;
-      font-weight: bold;
-      padding: 12px 24px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-family: sans-serif;
-      font-size: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      margin-right: 16px;
     }
   </style>
 </head>
@@ -121,16 +74,38 @@
   </header>
   <main>
 
-    <div class="app-card fade-1" style="background-color: #fff3ce;">
-      <h2>🎵 Yanosik Turbo 1.0 to lekka i intuicyjna aplikacja</h2>
-      <h2>pozwala Ci stworzyć własną bibliotekę muzyki z ulubionych źródeł.<br>
-         Nie potrzebujesz konta ani instalacji – Otrzymujesz gotowe MP3<h2>
-      </ul>
-    </div>
+    <h2>📌 Co to jest?</h2>
+    <p>
+      🎵 Yanosik Turbo 1.0 to lekka i intuicyjna aplikacja, która pozwala Ci stworzyć własną bibliotekę muzyki z ulubionych źródeł. Nie potrzebujesz konta ani instalacji – program działa od razu i jest całkowicie przenośny.
+    </p>
 
+    <h2>▶️ Jak zacząć?</h2>
+    <img src="wczytywanie.png" alt="Wczytywanie programu">
 
+    <p>
+      Folder z aplikacją możesz umieścić w dowolnym miejscu na dysku. Dla łatwego dostępu przypnij plik <strong>.exe</strong> do paska zadań. Po uruchomieniu wklej dokładnie adres z YouTube, SoundCloud lub innego obsługiwanego źródła.
+    </p>
 
+    <p>
+      Jeśli adres zawiera <code>list=</code> (czyli wskazuje playlistę), nie pobieraj całego linku jako MP4. Zaznacz tylko fragment do słowa <code>list</code> – wówczas program poradzi sobie bez problemu.
+    </p>
 
+    <h2>🎧 Odtwarzanie muzyki</h2>
+    <img src="bibliotekamp3.png" alt="Biblioteka MP3">
+
+    <p>
+      Po pobraniu MP3 możesz otworzyć bibliotekę klikając „Biblioteka MP3”. Zobaczysz prosty odtwarzacz z listą wszystkich pobranych utworów.
+    </p>
+
+    <p>
+      Wybierz piosenkę, kliknij <strong>Play</strong> i ciesz się muzyką. Możesz też przewijać utwory na pasku postępu. Program automatycznie odtwarza kolejne piosenki.
+    </p>
+
+    <p>
+      Aby szybko znaleźć folder zapisu, kliknij przycisk <strong>„Otwórz folder muzyki”</strong>.
+    </p>
+
+  </main>
 
   <footer>
     © 2025 Ramzi Studio – Wszystkie prawa zastrzeżone
