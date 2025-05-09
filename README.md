@@ -1,1 +1,0 @@
-# yanopis.github.io
