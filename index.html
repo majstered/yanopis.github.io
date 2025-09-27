@@ -1,119 +1,126 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="aplikacje.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>🎵 Yanosik Turbo 1.0</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Modlitwa fatimska — „O mój Jezu”</title>
+  <meta name="description" content="Modlitwa fatimska „O mój Jezu” (1917). Prosty wzór strony z przełącznikiem dzień/noc.">
   <style>
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 60%),
-                  radial-gradient(circle at 70% 70%, rgba(255,255,255,0.15), transparent 60%);
-      animation: fogMove 60s infinite linear;
-      z-index: -1;
+    /* Zmiennie i bazowe style */
+    :root{
+      --bg:#fbfaf7;
+      --card:#ffffff;
+      --ink:#1f2430;
+      --muted:#667085;
+      --blue:#0a4fa3;          /* tło niebieskiego bloku */
+      --border:#e6e6ea;
+      --radius:16px;
+      --shadow:0 8px 28px rgba(0,0,0,.08);
+      --accent:#1f5fbf;
     }
-    @keyframes fogMove {
-      0% { background-position: 0% 0%, 100% 100%; }
-      100% { background-position: 100% 100%, 0% 0%; }
+    .dark{
+      --bg:#10131a;
+      --card:#141824;
+      --ink:#e7ecf6;
+      --muted:#aab3c6;
+      --blue:#0b3d7a;
+      --border:#263049;
+      --shadow:0 8px 28px rgba(0,0,0,.45);
+      --accent:#7fb0ff;
     }
-    body {
-      font-family: sans-serif;
-      background-color: #fff3ce;
-      margin: 0;
-      padding: 0;
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.6;
     }
-    header {
-      background: linear-gradient(90deg, #444, #222);
-      color: white;
-      padding: 40px 20px;
+
+    /* Nagłówek z trybem dzień/noc */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:var(--card);
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 18px;
+    }
+    .topbar h1{
+      font-size: clamp(18px, 2.6vw, 28px);
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .mode-btn{
+      border:1px solid var(--border);
+      background:transparent;
+      color:var(--ink);
+      border-radius:999px;
+      padding:8px 12px;
+      cursor:pointer;
+    }
+
+    .wrap{
+      max-width: 1050px;
+      margin: 28px auto;
+      padding: 0 16px 56px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding: 18px;
+      margin: 18px 0 28px;
+    }
+
+    .section-title{
+      font-size: clamp(18px, 2.2vw, 24px);
+      margin: 0 0 14px;
+      border-left:6px solid var(--accent);
+      padding-left:10px;
+    }
+
+    /* Blok modlitwy (pełna szerokość karty) */
+    .prayer-box{
+      background: var(--blue);
+      color: #fff;
+      border-radius: calc(var(--radius) - 4px);
+      padding: clamp(14px, 3vw, 24px);
+      font-size: 1.15rem;
+      line-height: 1.7;
       text-align: center;
-      text-shadow: 2px 2px 4px #00000066;
     }
-    header h1 {
-      font-size: 42px;
-      margin: 0;
-    }
-    main {
-      padding: 30px 20px;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-    h2 {
-      font-size: 24px;
-      margin-top: 40px;
-      color: #222;
-    }
-    p {
-      font-size: 17px;
-      line-height: 1.6;
-      color: #333;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      margin: 20px 0;
-      border-radius: 10px;
-    }
-    footer {
-      text-align: center;
-      padding: 10px;
-      background-color: #f9e6bd;
-      font-size: 14px;
-    }
+
+    .lead{color:var(--muted); margin:.6rem 0 0}
   </style>
 </head>
 <body>
-  <header>
-    <h1>🎵 Yanosik Turbo 1.0</h1>
+  <!-- Nagłówek -->
+  <header class="topbar">
+    <h1>Modlitwa fatimska — „O mój Jezu”</h1>
+    <button class="mode-btn" id="modeBtn" aria-label="Przełącz tryb">🌓 Dzień / Noc</button>
   </header>
-  <main>
 
-    <h2>📌 Co to jest?</h2>
-    <p>
-      🎵 Yanosik Turbo 1.0 to lekka i intuicyjna aplikacja, która pozwala Ci stworzyć własną bibliotekę muzyki z ulubionych źródeł. Nie potrzebujesz konta ani instalacji – program działa od razu i jest całkowicie przenośny.
-    </p>
+  <main class="wrap">
 
-    <h2>▶️ Jak zacząć?</h2>
-    <img src="wczytywanie.png" alt="Wczytywanie programu">
+    <!-- MODLITWA FATIMSKA -->
+    <section class="card" id="modlitwa-fatimska">
+      <h2 class="section-title">„O mój Jezu” (1917)</h2>
 
-    <p>
-      Folder z aplikacją możesz umieścić w dowolnym miejscu na dysku. Dla łatwego dostępu przypnij plik <strong>.exe</strong> do paska zadań.
-    </p>
-    
-    <p>
-      Po uruchomieniu programu wklej dokładny adres z YouTube, SoundCloud lub innego źródła – koniecznie używając skrótu <strong>Ctrl + C</strong> (kopiowanie). Następnie użyj <strong>Ctrl + V</strong> (wklejanie).
-    </p>
-    
-    <p>
-      Jeśli adres zawiera <code>list=</code> (czyli wskazuje playlistę), nie pobieraj całego linku jako MP4. Zaznacz tylko fragment do słowa <code>list</code> – wówczas program poradzi sobie bez problemu.
-    </p>
+      <div class="prayer-box" aria-label="Modlitwa fatimska">
+        O mój Jezu, przebacz nam nasze grzechy, zachowaj nas od ognia piekielnego;
+        zaprowadź wszystkie dusze do nieba i dopomóż szczególnie tym,
+        którzy najbardziej potrzebują Twojego miłosierdzia.
+      </div>
 
-    <p>
-      Aby szybko znaleźć folder zapisu, kliknij przycisk <strong>„Otwórz folder muzyki”</strong>.
-    </p>
-    
-    <h2>🎧 Odtwarzanie muzyki</h2>
-    <img src="bibliotekamp3.png" alt="Biblioteka MP3">
-
-    <p>
-      Po pobraniu MP3 możesz otworzyć bibliotekę klikając „Biblioteka MP3”. Zobaczysz prosty odtwarzacz z listą wszystkich pobranych utworów.
-    </p>
-
-    <p>
-      Wybierz piosenkę, kliknij <strong>Play</strong> i ciesz się muzyką. Możesz też przewijać utwory na pasku postępu. Program automatycznie odtwarza kolejne piosenki.
-    </p>
-
+      <p class="lead">Zwyczajowo odmawiana po każdej dziesiątce różańca.</p>
+    </section>
 
   </main>
 
-  <footer>
-    © 2025 Ramzi Studio – Wszystkie prawa zastrzeżone
-  </footer>
-</body>
-</html>
+  <script>
+    // Tryb Dzień/Noc z pamięcią
+    (function(){
+      const ke
