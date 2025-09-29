@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Modlitwa fatimska — „O mój Jezu”</title>
-  <meta name="description" content="Modlitwa fatimska „O mój Jezu” (1917). Prosty wzór strony z przełącznikiem dzień/noc.">
+  <title>Modlitwy Maryjne</title>
+  <link rel="icon" type="image/png" href="aplikacje.png">
   <style>
     /* Zmiennie i bazowe style */
     :root{
@@ -35,10 +35,10 @@
       font-family: ui-serif, Georgia, "Times New Roman", serif;
       background:var(--bg);
       color:var(--ink);
-      line-height:1.6;
+      line-height:1.65;
     }
 
-    /* Nagłówek z trybem dzień/noc */
+    /* Topbar */
     .topbar{
       position:sticky; top:0; z-index:10;
       background:var(--card);
@@ -60,12 +60,14 @@
       cursor:pointer;
     }
 
+    /* Wrapper */
     .wrap{
       max-width: 1050px;
       margin: 28px auto;
       padding: 0 16px 56px;
     }
 
+    /* Karty */
     .card{
       background:var(--card);
       border:1px solid var(--border);
@@ -74,7 +76,6 @@
       padding: 18px;
       margin: 18px 0 28px;
     }
-
     .section-title{
       font-size: clamp(18px, 2.2vw, 24px);
       margin: 0 0 14px;
@@ -82,67 +83,243 @@
       padding-left:10px;
     }
 
-    /* Blok modlitwy (pełna szerokość karty) */
+    /* Niebieskie pole na treść */
     .prayer-box{
       background: var(--blue);
       color: #fff;
       border-radius: calc(var(--radius) - 4px);
       padding: clamp(14px, 3vw, 24px);
-      font-size: 1.15rem;
-      line-height: 1.7;
-      text-align: center;
+      font-size: clamp(16px, 2.1vw, 20px);
+      line-height: 1.75;
     }
 
-    .lead{color:var(--muted); margin:.6rem 0 0}
+    /* Zachowaj łamania wierszy jak w oryginale */
+    .poem{ white-space: pre-line; }
+
+    /* Mini spis treści */
+    .toc{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin: 8px 0 0;
+    }
+    .toc a{
+      display:inline-block; padding:8px 12px;
+      background:var(--blue); color:#fff; text-decoration:none;
+      border-radius:10px; font-size:14px;
+    }
+    .toc a:hover{ opacity:.9; }
+
+    /* Pasek nawigacyjny (dół/góra) */
+    .nav-bar { text-align:center; margin: 30px 0; }
+    .nav-btn{
+      display:inline-block; margin:8px; padding:10px 20px;
+      background: var(--blue, #0a4fa3); color:#fff; font-size:16px;
+      border-radius: 12px; text-decoration:none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: background .3s, transform .2s;
+    }
+    .nav-btn:hover{ background:#083d80; transform: translateY(-2px); }
   </style>
 </head>
 <body>
   <!-- Nagłówek -->
   <header class="topbar">
-    <h1>Modlitwa fatimska — „O mój Jezu”</h1>
+    <h1>Modlitwy Maryjne</h1>
     <button class="mode-btn" id="modeBtn" aria-label="Przełącz tryb">🌓 Dzień / Noc</button>
   </header>
 
+  <!-- Pasek nawigacyjny (góra) -->
+  <nav class="nav-bar">
+    <a href="https://majstered.github.io/strazopis.github.io/" class="nav-btn">📿 Różaniec</a>
+    <a href="index.html" class="nav-btn">🏠 Strona główna</a>
+  </nav>
+
   <main class="wrap">
 
-    <!-- MODLITWA FATIMSKA -->
-    <section class="card" id="modlitwa-fatimska">
-      <h2 class="section-title">„O mój Jezu” (1917)</h2>
-
-      <div class="prayer-box" aria-label="Modlitwa fatimska">
-        O mój Jezu, przebacz nam nasze grzechy, zachowaj nas od ognia piekielnego;
-        zaprowadź wszystkie dusze do nieba i dopomóż szczególnie tym,
-        którzy najbardziej potrzebują Twojego miłosierdzia.
+    <!-- Spis treści (kotwice do sekcji) -->
+    <section class="card">
+      <h2 class="section-title">Spis treści</h2>
+      <div class="toc">
+        <a href="#bogurodzica">Bogurodzica</a>
+        <a href="#pod-twoja-obrone">Pod Twoją obronę</a>
+        <a href="#akt-oddania">Akt oddania się Matce Bożej</a>
+        <a href="#memorare">Pomnij, o Najświętsza Panno Maryjo (Memorare)</a>
+        <a href="#nowenna-medalik">Nowenna do MB od Cudownego Medalika</a>
+        <a href="#modlitwa-chorych">Modlitwa Chorych</a>
+        <a href="#katarzyna-laboure">Modlitwa św. Katarzyny Labouré</a>
       </div>
+    </section>
 
-      <p class="lead">Zwyczajowo odmawiana po każdej dziesiątce różańca.</p>
+    <!-- Bogurodzica -->
+    <section class="card" id="bogurodzica">
+      <h2 class="section-title">Bogurodzica</h2>
+      <div class="prayer-box poem">
+Bogurodzica, Dziewica, Bogiem sławiena Maryja!
+U Twego Syna, Gospodzina, Matko zwolena, Maryja,
+Ziści nam, spuści nam! Kyrie, eleison.
+
+Twego dzieła Krzciciela, Bożycze,
+Usłysz głosy, napełń myśli człowiecze.
+Słysz modlitwę, jąż nosimy,
+A dać raczy, Jegoż prosimy:
+A na świecie zbożny pobyt,
+Po żywocie rajski przebyt.
+Kyrie, eleison.
+      </div>
+    </section>
+
+    <!-- Pod Twoją obronę -->
+    <section class="card" id="pod-twoja-obrone">
+      <h2 class="section-title">Pod Twoją obronę</h2>
+      <div class="prayer-box poem">
+Pod Twoją obronę uciekamy się, Święta Boża Rodzicielko,
+naszymi prośbami racz nie gardzić w potrzebach naszych,
+ale od wszelakich złych przygód racz nas zawsze wybawiać,
+Panno chwalebna i błogosławiona.
+O Pani nasza, Orędowniczko nasza, Pośredniczko nasza, Pocieszycielko nasza.
+Z Synem swoim nas pojednaj, Synowi swojemu nas polecaj,
+swojemu Synowi nas oddawaj. Amen.
+      </div>
+    </section>
+
+    <!-- Akt oddania się Matce Bożej -->
+    <section class="card" id="akt-oddania">
+      <h2 class="section-title">Akt oddania się Matce Bożej</h2>
+      <div class="prayer-box poem">
+O Maryjo, Niepokalana Matko Boga i moja Matko,
+Tobie poświęcam całe moje życie, wszystko, czym jestem i co posiadam.
+Oddaję Ci moje serce, moją duszę, moje myśli, moje pragnienia.
+Ty, która jesteś Matką miłosierdzia, prowadź mnie każdego dnia ku Jezusowi.
+Przyjmij ten akt mojego zawierzenia i oddania, i uczyń mnie narzędziem pokoju, wiary i miłości.
+Chcę żyć zawsze z Tobą, przez Ciebie, i dla Jezusa – Twojego Syna,
+w mocy Ducha Świętego. Amen.
+      </div>
+    </section>
+
+    <!-- Memorare -->
+    <section class="card" id="memorare">
+      <h2 class="section-title">Pomnij, o Najświętsza Panno Maryjo (Memorare)</h2>
+      <div class="prayer-box poem">
+Pomnij, o Najświętsza Panno Maryjo,
+że nigdy nie słyszano,
+abyś opuściła tego,
+kto się do Ciebie ucieka,
+Twej pomocy wzywa,
+Ciebie o przyczynę prosi.
+
+Tą ufnością ożywiony,
+do Ciebie, o Panno nad pannami i Matko, biegnę,
+do Ciebie przychodzę,
+przed Tobą jako grzesznik płaczący staję.
+
+O Matko Słowa, racz nie gardzić słowami moimi,
+ale usłysz je łaskawie i wysłuchaj. Amen.
+      </div>
+    </section>
+
+    <!-- Nowenna do Matki Bożej od Cudownego Medalika -->
+    <section class="card" id="nowenna-medalik">
+      <h2 class="section-title">Nowenna do Matki Bożej od Cudownego Medalika</h2>
+      <div class="prayer-box poem">
+Pomnij o najdobrotliwsza Panno Maryjo,
+że od wieków nie słyszano, aby kto uciekając się do Ciebie,
+Twej pomocy wzywając, Ciebie o przyczynę prosząc,
+miał być od Ciebie opuszczony.
+Tą nadzieją ożywieni uciekamy się do Ciebie,
+o Maryjo bez grzechu poczęta,
+pełni najżywszej ufności w Twoje potężne i skuteczne orędownictwo,
+które okazujesz przez Cudowny Medalik
+i pokornie błagamy, my ukochane dzieci Twoje:
+uproś nam u Boga łaski i dobrodziejstwa,
+o które prosimy w tej nowennie,
+o ile to jest zbawienne dla nas i dla tych, za których się modlimy…
+(chwila skupienia – intencje)
+
+O Pani od Cudownego Medalika,
+Tyś raczyła się ukazać św. Katarzynie Labouré
+jako Pośredniczka między Bogiem i ludźmi,
+błagam Cię racz mnie wysłuchać!
+W Twe ręce macierzyńskie składam wszystkie moje intencje,
+moje potrzeby duchowe i doczesne.
+Przedstaw je Synowi Twojemu wraz z prośbą,
+którą Ci szczególnie polecam…
+Spraw, aby Jezus mnie wysłuchał,
+jeśli to zgadza się z Wolą Bożą i jest ku pożytkowi mej duszy.
+Po wzniesieniu Swych błagalnych rąk do Boga
+racz, o Panno Można spuścić je na mnie
+i otoczyć mnie promieniami swych łask,
+aby ich jasnością i ciepłem pobudzone,
+serce moje zerwało więzy ziemskich przywiązań,
+oczyściło się i naśladowało Cię z radością
+aż do chwili spotkania się z Tobą w niebie. Amen
+      </div>
+    </section>
+
+    <!-- Modlitwa Chorych -->
+    <section class="card" id="modlitwa-chorych">
+      <h2 class="section-title">Modlitwa Chorych</h2>
+      <div class="prayer-box poem">
+Maryjo Dziewico, Matko Miłosierdzia,
+z ufnością kieruję do Ciebie
+moje synowskie spojrzenie.
+Wiem i wierzę,
+że jesteś przy mnie w moim doświadczeniu,
+tak jak byłaś przy Jezusie, Twoim Synu,
+na Drodze Krzyżowej.
+Kiedy mój krzyż będzie zbyt ciężki,
+pomóż mi go nieść
+i spraw, bym się nie zniechęcał.
+Dziewico Maryjo, nasza Matko,
+módl się za mną i za tymi wszystkimi,
+którzy są mi życzliwi.
+Niechaj dzięki Twojemu wstawiennictwu,
+Jezus, Twój Syn,
+napełni nas Swoim pokojem
+i zachowa nas w nadziei.
+      </div>
+    </section>
+
+    <!-- Modlitwa św. Katarzyny Labouré -->
+    <section class="card" id="katarzyna-laboure">
+      <h2 class="section-title">Modlitwa św. Katarzyny Labouré</h2>
+      <div class="prayer-box poem">
+Gdy idę do Kaplicy, staję przed Dobrym Bogiem i mówię:
+„Oto jestem Panie daj mi czego pragniesz”
+Jeśli coś daje, cieszę się i dziękuję.
+Jeśli nic nie daje, także dziękuję,
+ponieważ nie zasługuję na więcej.
+A potem mówię Mu o wszystkim,
+co noszę w sercu; o moich smutkach i radościach
+i staram się słuchać.
+Jeśli będziecie słuchać, On zacznie mówić.
+Trzeba do Niego mówić i słuchać.
+On mówi wtedy,
+gdy trwa się przed Nim szczerze i z prostotą.
+      </div>
     </section>
 
   </main>
+
+  <!-- Pasek nawigacyjny (dół) -->
+  <nav class="nav-bar">
+    <a href="index.html" class="nav-btn">🏠 Strona główna</a>
+    <a href="rozaniec.html" class="nav-btn">📿 Różaniec</a>
+    <a href="modlitwy.html" class="nav-btn">🙏 Modlitwy</a>
+    <a href="kontakt.html" class="nav-btn">📬 Kontakt</a>
+  </nav>
 
   <script>
     // Tryb Dzień/Noc z pamięcią
     (function(){
       const key = 'theme-preference';
       const btn = document.getElementById('modeBtn');
-
-      function applyTheme(val){
-        document.documentElement.classList.toggle('dark', val === 'dark');
-      }
-      function currentTheme(){
-        return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-      }
-
+      function applyTheme(val){ document.documentElement.classList.toggle('dark', val === 'dark'); }
+      function current(){ return document.documentElement.classList.contains('dark') ? 'dark' : 'light'; }
       const saved = localStorage.getItem(key);
       if(saved){ applyTheme(saved); }
-      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-        applyTheme('dark');
-      }
-
+      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){ applyTheme('dark'); }
       btn.addEventListener('click', ()=>{
-        const next = currentTheme() === 'dark' ? 'light' : 'dark';
-        applyTheme(next);
-        localStorage.setItem(key, next);
+        const next = current()==='dark' ? 'light' : 'dark';
+        applyTheme(next); localStorage.setItem(key, next);
       });
     })();
   </script>
