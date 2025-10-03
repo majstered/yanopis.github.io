@@ -1,321 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Modlitwy Maryjne</title>
-  <link rel="icon" type="image/png" href="aplikacje.png">
+  <meta charset="UTF-8" />
+  <title>Komentarze – Różańcowa Księga</title>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
+
   <style>
-    /* Zmiennie i bazowe style */
-    :root{
-      --bg:#fbfaf7;
-      --card:#ffffff;
-      --ink:#1f2430;
-      --muted:#667085;
-      --blue:#0a4fa3;          /* tło niebieskiego bloku */
-      --border:#e6e6ea;
-      --radius:16px;
-      --shadow:0 8px 28px rgba(0,0,0,.08);
-      --accent:#1f5fbf;
+    body { font-family: sans-serif; background: #f5f5f5; padding: 20px; max-width: 700px; margin: auto; }
+    h2 { margin-top: 40px; }
+    .komentarz {
+      background: #eaf0fb;
+      margin-bottom: 10px;
+      border-left: 5px solid #4b6584;
+      padding: 10px;
     }
-    .dark{
-      --bg:#10131a;
-      --card:#141824;
-      --ink:#e7ecf6;
-      --muted:#aab3c6;
-      --blue:#0b3d7a;
-      --border:#263049;
-      --shadow:0 8px 28px rgba(0,0,0,.45);
-      --accent:#7fb0ff;
+    .naglowek {
+      font-weight: bold;
+      background: #4b6584;
+      color: white;
+      padding: 5px;
     }
-
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-serif, Georgia, "Times New Roman", serif;
-      background:var(--bg);
-      color:var(--ink);
-      line-height:1.65;
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-
-    /* Topbar */
-    .topbar{
-      position:sticky; top:0; z-index:10;
-      background:var(--card);
-      border-bottom:1px solid var(--border);
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 18px;
+    button {
+      margin-top: 15px;
+      background: #339cff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
     }
-    .topbar h1{
-      font-size: clamp(18px, 2.6vw, 28px);
-      margin:0;
-      letter-spacing:.2px;
+    button:hover {
+      background-color: #1f78d1;
     }
-    .mode-btn{
-      border:1px solid var(--border);
-      background:transparent;
-      color:var(--ink);
-      border-radius:999px;
-      padding:8px 12px;
-      cursor:pointer;
-    }
-
-    /* Wrapper */
-    .wrap{
-      max-width: 1050px;
-      margin: 28px auto;
-      padding: 0 16px 56px;
-    }
-
-    /* Karty */
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding: 18px;
-      margin: 18px 0 28px;
-    }
-    .section-title{
-      font-size: clamp(18px, 2.2vw, 24px);
-      margin: 0 0 14px;
-      border-left:6px solid var(--accent);
-      padding-left:10px;
-    }
-
-    /* Niebieskie pole na treść */
-    .prayer-box{
-      background: var(--blue);
-      color: #fff;
-      border-radius: calc(var(--radius) - 4px);
-      padding: clamp(14px, 3vw, 24px);
-      font-size: clamp(16px, 2.1vw, 20px);
-      line-height: 1.75;
-    }
-
-    /* Zachowaj łamania wierszy jak w oryginale */
-    .poem{ white-space: pre-line; }
-
-    /* Mini spis treści */
-    .toc{
-      display:flex; flex-wrap:wrap; gap:8px;
-      margin: 8px 0 0;
-    }
-    .toc a{
-      display:inline-block; padding:8px 12px;
-      background:var(--blue); color:#fff; text-decoration:none;
-      border-radius:10px; font-size:14px;
-    }
-    .toc a:hover{ opacity:.9; }
-
-    /* Pasek nawigacyjny (dół/góra) */
-    .nav-bar { text-align:center; margin: 30px 0; }
-    .nav-btn{
-      display:inline-block; margin:8px; padding:10px 20px;
-      background: var(--blue, #0a4fa3); color:#fff; font-size:16px;
-      border-radius: 12px; text-decoration:none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      transition: background .3s, transform .2s;
-    }
-    .nav-btn:hover{ background:#083d80; transform: translateY(-2px); }
   </style>
 </head>
 <body>
-  <!-- Nagłówek -->
-  <header class="topbar">
-    <h1>Modlitwy Maryjne</h1>
-    <button class="mode-btn" id="modeBtn" aria-label="Przełącz tryb">🌓 Dzień / Noc</button>
-  </header>
 
+  <h2>🗨️ Wasze komentarze:</h2>
+  <div id="lista-komentarzy"></div>
 
+  <label>Autor:
+    <input type="text" id="autor" placeholder="Twoje imię">
+  </label>
+  <label>Treść:
+    <textarea id="tresc" rows="3" placeholder="Napisz komentarz..."></textarea>
+  </label>
+  <button onclick="dodajKomentarz()">Dodaj komentarz</button>
 
-  <main class="wrap">
-
-    <!-- Spis treści (kotwice do sekcji) -->
-    <section class="card">
-      <h2 class="section-title">Spis treści</h2>
-      <div class="toc">
-        <a href="#bogurodzica">Bogurodzica</a>
-        <a href="#pod-twoja-obrone">Pod Twoją obronę</a>
-        <a href="#akt-oddania">Akt oddania się Matce Bożej</a>
-        <a href="#memorare">Pomnij, o Najświętsza Panno Maryjo (Memorare)</a>
-        <a href="#nowenna-medalik">Nowenna do MB od Cudownego Medalika</a>
-        <a href="#modlitwa-chorych">Modlitwa Chorych</a>
-        <a href="#katarzyna-laboure">Modlitwa św. Katarzyny Labouré</a>
-      </div>
-    </section>
-
-    <!-- Bogurodzica -->
-    <section class="card" id="bogurodzica">
-      <h2 class="section-title">Bogurodzica</h2>
-      <div class="prayer-box poem">
-Bogurodzica, Dziewica, Bogiem sławiena Maryja!
-U Twego Syna, Gospodzina, Matko zwolena, Maryja,
-Ziści nam, spuści nam! Kyrie, eleison.
-
-Twego dzieła Krzciciela, Bożycze,
-Usłysz głosy, napełń myśli człowiecze.
-Słysz modlitwę, jąż nosimy,
-A dać raczy, Jegoż prosimy:
-A na świecie zbożny pobyt,
-Po żywocie rajski przebyt.
-Kyrie, eleison.
-      </div>
-    </section>
-
-    <!-- Pod Twoją obronę -->
-    <section class="card" id="pod-twoja-obrone">
-      <h2 class="section-title">Pod Twoją obronę</h2>
-      <div class="prayer-box poem">
-Pod Twoją obronę uciekamy się, Święta Boża Rodzicielko,
-naszymi prośbami racz nie gardzić w potrzebach naszych,
-ale od wszelakich złych przygód racz nas zawsze wybawiać,
-Panno chwalebna i błogosławiona.
-O Pani nasza, Orędowniczko nasza, Pośredniczko nasza, Pocieszycielko nasza.
-Z Synem swoim nas pojednaj, Synowi swojemu nas polecaj,
-swojemu Synowi nas oddawaj. Amen.
-      </div>
-    </section>
-
-    <!-- Akt oddania się Matce Bożej -->
-    <section class="card" id="akt-oddania">
-      <h2 class="section-title">Akt oddania się Matce Bożej</h2>
-      <div class="prayer-box poem">
-O Maryjo, Niepokalana Matko Boga i moja Matko,
-Tobie poświęcam całe moje życie, wszystko, czym jestem i co posiadam.
-Oddaję Ci moje serce, moją duszę, moje myśli, moje pragnienia.
-Ty, która jesteś Matką miłosierdzia, prowadź mnie każdego dnia ku Jezusowi.
-Przyjmij ten akt mojego zawierzenia i oddania, i uczyń mnie narzędziem pokoju, wiary i miłości.
-Chcę żyć zawsze z Tobą, przez Ciebie, i dla Jezusa – Twojego Syna,
-w mocy Ducha Świętego. Amen.
-      </div>
-    </section>
-
-    <!-- Memorare -->
-    <section class="card" id="memorare">
-      <h2 class="section-title">Pomnij, o Najświętsza Panno Maryjo (Memorare)</h2>
-      <div class="prayer-box poem">
-Pomnij, o Najświętsza Panno Maryjo,
-że nigdy nie słyszano,
-abyś opuściła tego,
-kto się do Ciebie ucieka,
-Twej pomocy wzywa,
-Ciebie o przyczynę prosi.
-
-Tą ufnością ożywiony,
-do Ciebie, o Panno nad pannami i Matko, biegnę,
-do Ciebie przychodzę,
-przed Tobą jako grzesznik płaczący staję.
-
-O Matko Słowa, racz nie gardzić słowami moimi,
-ale usłysz je łaskawie i wysłuchaj. Amen.
-      </div>
-    </section>
-
-    <!-- Nowenna do Matki Bożej od Cudownego Medalika -->
-    <section class="card" id="nowenna-medalik">
-      <h2 class="section-title">Nowenna do Matki Bożej od Cudownego Medalika</h2>
-      <div class="prayer-box poem">
-Pomnij o najdobrotliwsza Panno Maryjo,
-że od wieków nie słyszano, aby kto uciekając się do Ciebie,
-Twej pomocy wzywając, Ciebie o przyczynę prosząc,
-miał być od Ciebie opuszczony.
-Tą nadzieją ożywieni uciekamy się do Ciebie,
-o Maryjo bez grzechu poczęta,
-pełni najżywszej ufności w Twoje potężne i skuteczne orędownictwo,
-które okazujesz przez Cudowny Medalik
-i pokornie błagamy, my ukochane dzieci Twoje:
-uproś nam u Boga łaski i dobrodziejstwa,
-o które prosimy w tej nowennie,
-o ile to jest zbawienne dla nas i dla tych, za których się modlimy…
-(chwila skupienia – intencje)
-
-O Pani od Cudownego Medalika,
-Tyś raczyła się ukazać św. Katarzynie Labouré
-jako Pośredniczka między Bogiem i ludźmi,
-błagam Cię racz mnie wysłuchać!
-W Twe ręce macierzyńskie składam wszystkie moje intencje,
-moje potrzeby duchowe i doczesne.
-Przedstaw je Synowi Twojemu wraz z prośbą,
-którą Ci szczególnie polecam…
-Spraw, aby Jezus mnie wysłuchał,
-jeśli to zgadza się z Wolą Bożą i jest ku pożytkowi mej duszy.
-Po wzniesieniu Swych błagalnych rąk do Boga
-racz, o Panno Można spuścić je na mnie
-i otoczyć mnie promieniami swych łask,
-aby ich jasnością i ciepłem pobudzone,
-serce moje zerwało więzy ziemskich przywiązań,
-oczyściło się i naśladowało Cię z radością
-aż do chwili spotkania się z Tobą w niebie. Amen
-      </div>
-    </section>
-
-    <!-- Modlitwa Chorych -->
-    <section class="card" id="modlitwa-chorych">
-      <h2 class="section-title">Modlitwa Chorych</h2>
-      <div class="prayer-box poem">
-Maryjo Dziewico, Matko Miłosierdzia,
-z ufnością kieruję do Ciebie
-moje synowskie spojrzenie.
-Wiem i wierzę,
-że jesteś przy mnie w moim doświadczeniu,
-tak jak byłaś przy Jezusie, Twoim Synu,
-na Drodze Krzyżowej.
-Kiedy mój krzyż będzie zbyt ciężki,
-pomóż mi go nieść
-i spraw, bym się nie zniechęcał.
-Dziewico Maryjo, nasza Matko,
-módl się za mną i za tymi wszystkimi,
-którzy są mi życzliwi.
-Niechaj dzięki Twojemu wstawiennictwu,
-Jezus, Twój Syn,
-napełni nas Swoim pokojem
-i zachowa nas w nadziei.
-      </div>
-    </section>
-
-    <!-- Modlitwa św. Katarzyny Labouré -->
-    <section class="card" id="katarzyna-laboure">
-      <h2 class="section-title">Modlitwa św. Katarzyny Labouré</h2>
-      <div class="prayer-box poem">
-Gdy idę do Kaplicy, staję przed Dobrym Bogiem i mówię:
-„Oto jestem Panie daj mi czego pragniesz”
-Jeśli coś daje, cieszę się i dziękuję.
-Jeśli nic nie daje, także dziękuję,
-ponieważ nie zasługuję na więcej.
-A potem mówię Mu o wszystkim,
-co noszę w sercu; o moich smutkach i radościach
-i staram się słuchać.
-Jeśli będziecie słuchać, On zacznie mówić.
-Trzeba do Niego mówić i słuchać.
-On mówi wtedy,
-gdy trwa się przed Nim szczerze i z prostotą.
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Pasek nawigacyjny (dół) -->
-  <nav class="nav-bar">
-    <a href="https://majstered.github.io/siedliszcze.github.io/" class="nav-btn">🏠 Strona główna</a>
-
-  </nav>
-
+  <!-- Konfiguracja Firebase -->
   <script>
-    // Tryb Dzień/Noc z pamięcią
-    (function(){
-      const key = 'theme-preference';
-      const btn = document.getElementById('modeBtn');
-      function applyTheme(val){ document.documentElement.classList.toggle('dark', val === 'dark'); }
-      function current(){ return document.documentElement.classList.contains('dark') ? 'dark' : 'light'; }
-      const saved = localStorage.getItem(key);
-      if(saved){ applyTheme(saved); }
-      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){ applyTheme('dark'); }
-      btn.addEventListener('click', ()=>{
-        const next = current()==='dark' ? 'light' : 'dark';
-        applyTheme(next); localStorage.setItem(key, next);
+    const firebaseConfig = {
+      apiKey: "AIzaSyDRR3vSfgpEmbpZz_-VldMTnTHoXRfuGKg",
+      authDomain: "ksiega-ramzi.firebaseapp.com",
+      projectId: "ksiega-ramzi",
+      storageBucket: "ksiega-ramzi.firebasestorage.app",
+      messagingSenderId: "400735142662",
+      appId: "1:400735142662:web:0a14cf4c29554979839487",
+      measurementId: "G-JGSBCET9M3",
+      databaseURL: "https://ksiega-ramzi-default-rtdb.europe-west1.firebasedatabase.app"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function pokazKomentarze() {
+      const div = document.getElementById("lista-komentarzy");
+      db.ref("komentarze").on("value", (snapshot) => {
+        const data = snapshot.val() || {};
+        const arr = Object.values(data).reverse();
+        div.innerHTML = arr.map(k => `
+          <div class="komentarz">
+            <div class="naglowek">${k.autor}: ${k.data}</div>
+            <div>${k.tresc}</div>
+          </div>
+        `).join("");
       });
-    })();
+    }
+
+    function dodajKomentarz() {
+      const autor = document.getElementById("autor").value.trim();
+      const tresc = document.getElementById("tresc").value.trim();
+      if (!autor || !tresc) return alert("Wypełnij wszystkie pola");
+      const data = new Date().toLocaleString("pl-PL");
+      db.ref("komentarze").push({ autor, tresc, data });
+
+      document.getElementById("autor").value = "";
+      document.getElementById("tresc").value = "";
+    }
+
+    pokazKomentarze();
   </script>
+
 </body>
 </html>
